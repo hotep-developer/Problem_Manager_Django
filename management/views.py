@@ -1,16 +1,18 @@
+# from django.views import generic
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views import generic
-from management.models import Book, Problem, Subject
-from management.forms import SubjectForm, BookForm
+from management.models import Subject, Book, Problem
+from management.forms import SubjectForm, BookForm, ProblemForm
 
 
 
 def top(request):
     # topページ
     subjects = Subject.objects.filter(user=request.user).all().order_by("name")
+    books_count = Book.objects.filter(user=request.user).all().count()
     context = {
         "subjects":subjects,
+        "books_count":books_count,
     }
     return render(request, "management/top.html", context)
 
@@ -172,4 +174,22 @@ def book_delete(request, pk):
 
 
 def problem_create(request):
-    pass
+    # Problem 作成用
+    if request.method == "POST":
+        # form = ProblemForm(request.POST) # 初期値ありでフォームを作成
+        form = ProblemForm(request.POST, initial={"user":request.user}) # 初期値ありでフォームを作成
+        if form.is_valid():
+            form.save()
+            return redirect("management:top")
+    else:
+        # form = ProblemForm()
+        form = ProblemForm(initial={"user":request.user})
+        # form.fields["subject"].queryset = form.fields["subject"].queryset.filter(user=request.user)
+        form.fields["book"].queryset = form.fields["book"].queryset.filter(user=request.user)
+    context = {
+        "process": "作成",
+        "object_kind": "問題",
+        "form": form,
+        "url_cancel": reverse("management:top"),
+    }
+    return render(request, "management/management_form.html", context=context)

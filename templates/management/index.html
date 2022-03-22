@@ -1,4 +1,4 @@
-{% extends "management/base_management.html" %}
+{% extends "management/base.html" %}
 
 {% block content %}
 <div class="container-md">
@@ -7,10 +7,12 @@
             <button type="button" class="btn btn-success"
                 onclick="location.href=`{% url 'management:subject_create' %}`">教科を追加</button>
         </div>
+        {% if subjects.count > 0 %}
         <div class="col">
             <button type="button" class="btn btn-primary"
                 onclick="location.href=`{% url 'management:book_create' %}`">問題集を追加</button>
         </div>
+        {% endif %}
     </div>
 </div>
 <div class="pt-4">

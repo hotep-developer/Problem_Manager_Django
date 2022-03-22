@@ -1,4 +1,4 @@
-{% extends "management/base_management.html" %}
+{% extends "management/base.html" %}
 
 {% block content %}
 <input class="btn-check" style=display:none type="radio" name="categories" id="All" value="All" autocomplete="off"
@@ -6,13 +6,19 @@
 <input class="btn-check" style=display:none type="radio" name="categories" id="Maru" value="Maru" autocomplete="off">
 <input class="btn-check" style=display:none type="radio" name="categories" id="Batsu" value="Batsu" autocomplete="off">
 
-<div class="py-2">
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <label class="btn btn-outline-primary" for="All"> All </label>
-
-        <label class="btn btn-outline-primary" for="Maru"> ◯のみ </label>
-
-        <label class="btn btn-outline-primary" for="Batsu"> ✕のみ </label>
+<div class="py-2 container">
+    <div class="row">
+        <div class="btn-group col-7" role="group" aria-label="Basic radio toggle button group">
+            <label class="btn btn-outline-primary" for="All"> All </label>
+            <label class="btn btn-outline-primary" for="Maru"> ◯のみ </label>
+            <label class="btn btn-outline-primary" for="Batsu"> ✕のみ </label>
+        </div>
+        <div class="col">
+            {% if books_count > 0 %}
+            <button type="button" class="btn btn-primary"
+                onclick="location.href=`{% url 'management:problem_create' %}`">問題を追加</button>
+            {% endif %}
+        </div>
     </div>
 </div>
 <div class="pt-2">
@@ -34,7 +40,7 @@
         <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="tab-{{ subject.pk }}"
             role="tabpanel" aria-labelledby="home-tab">
             <div class="accordion" id="accordionPanelsStayOpenExample">
-                {% for book in subject.books.all %}
+                {% for book in subject.books.all|dictsort:"name" %}
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsStayOpen-heading{{ book.pk }}">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -46,30 +52,29 @@
                     <div id="panelsStayOpen-collapse{{ book.pk }}" class="accordion-collapse collapse show"
                         aria-labelledby="panelsStayOpen-headingOn">
                         <div class="accordion-body">
-                            <div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">問題番号</th>
-                                            <th scope="col">チェック</th>
-                                        </tr>
-                                    </thead>
-                                    {% for problem in book.problems.all %}
-                                    <tr class="target" data-category="{{ problem.get_checker_display }}">
-                                        <th class="pnumber" scope="row">
-                                            <a href="">{{ problem.number }}</a>
-                                        </th>
-                                        <td>
-                                            {{ problem.get_checker_display }}
-                                        </td>
+                            {% if book.problems.count == 0 %}
+                            <span class="text-danger fw-bold">
+                                問題を追加してください
+                            </span>
+                            {% else %}
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">問題番号</th>
+                                        <th scope="col">チェック</th>
                                     </tr>
-                                    {% empty %}
-                                    <span class="text-danger fw-bold">
-                                        問題を追加してください
-                                    </span>
+                                </thead>
+                                <tbody>
+                                    {% for problem in book.problems.all|dictsort:"number" %}
+                                    <tr>
+                                        <th class="pnumber" scope="row"><a href="">{{ problem.number }}</a></th>
+                                        <td>{{ problem.get_checker_display }}</td>
+                                    </tr>
+
                                     {% endfor %}
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

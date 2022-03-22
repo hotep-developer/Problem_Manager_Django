@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django import forms
 
-from management.models import Book, Subject
+from management.models import Subject, Book, Problem
 
 # ユーザーモデルの取得
 User=get_user_model()
@@ -10,7 +10,7 @@ User=get_user_model()
 
 
 class SubjectForm(forms.ModelForm):
-    # 教科のフォーム
+    # Subject のフォーム
 
     class Meta:
         model = Subject
@@ -23,11 +23,8 @@ class SubjectForm(forms.ModelForm):
         self.fields["user"].label = "ユーザー" #
 
 
-
-
-
 class BookForm(forms.ModelForm):
-    # 問題集のフォーム
+    # Book のフォーム
     # "user"フィールドのquerysetのフィルタリングはview側でやってる。
     # たぶん効率わるい
     class Meta:
@@ -36,5 +33,17 @@ class BookForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(BookForm, self).__init__(*args, **kwargs)
+        self.fields["user"].disabled = True # ユーザー欄は操作不可
+        self.fields["user"].label = "ユーザー"
+
+
+class ProblemForm(forms.ModelForm):
+    # Problem のフォーム
+    class Meta:
+        model = Problem
+        fields = ("user", "book", "number", )
+
+    def __init__(self, *args, **kwargs):
+        super(ProblemForm, self).__init__(*args, **kwargs)
         self.fields["user"].disabled = True # ユーザー欄は操作不可
         self.fields["user"].label = "ユーザー"
