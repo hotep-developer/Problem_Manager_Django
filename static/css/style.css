@@ -1,0 +1,29 @@
+body {
+    /* background-color: #e6e6e6; */
+    background-color: #c0c0c0;
+}
+
+.nav-tabs {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    /* max-height: 100px; */
+}
+
+.nav-link {
+    min-width: 100px;
+}
+
+
+input[type="radio"] {
+    display: none;
+}
+
+[value="All"]:checked ~ div tr.target {
+    display: contents;
+}
+
+[value="Maru"]:checked ~ div tr.target:not([data-category="◯"]),
+[value="Batsu"]:checked ~ div tr.target:not([data-category="✕"]) {
+    display: none;
+}

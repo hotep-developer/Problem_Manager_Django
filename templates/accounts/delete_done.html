@@ -1,0 +1,22 @@
+{% extends "base/base.html" %}
+
+<!-- コンテンツ -->
+{% block main %}
+<div class="container">
+    <div class="col-md-6 offset-md-3">
+        <div class="card mt-3 mb-3 bg-light">
+            <!-- カードヘッダー -->
+            <div class="card-header bg-success text-light">
+                <h4 class="pt-2">退会完了</h4>
+            </div>
+            <!-- カードボディー -->
+            <div class="card-body">
+                <p>退会しました。</p>
+                <p>またのご利用お待ちしております。</p>
+                <hr>
+                <a href="{% url 'home' %}">サイトトップへ</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

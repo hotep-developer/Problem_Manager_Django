@@ -1,0 +1,22 @@
+{% extends "base/base.html" %}
+
+<!-- コンテンツ -->
+{% block main %}
+<div class='container'>
+    <div class="col-md-6 offset-md-3">
+        <div class='card mt-3 mb-3 bg-light'>
+            <!-- カードヘッダー -->
+            <div class='card-header bg-success text-light'>
+                <h4 class="pt-2">ログアウト</h4>
+            </div>
+            <!-- カードボディー -->
+            <div class='card-body'>
+                <p>ログアウトしました。</p>
+                <p>ご利用ありがとうございました。</p>
+                <hr class='mt-2 mb-2'>
+                <p><a href="{% url 'accounts:login' %}">もう一度ログインする</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

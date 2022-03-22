@@ -1,0 +1,16 @@
+{% extends "base/base.html" %}
+
+{% block main %}
+<h1 class="center">サイトトップ</h1>
+
+{% if not user.is_authenticated %}
+
+<h2>ログインされていません</h2>
+
+{% else %}
+
+<h2>こんにちは! {{ user.username }} さん</h2>
+
+{% endif %}
+
+{% endblock %}

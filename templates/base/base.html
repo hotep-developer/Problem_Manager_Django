@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'images/180x180.png' %}" sizes="180x180">
+    <link rel="icon" type="image/png" href="{% static 'images/192x192.png' %}" sizes="192x192">
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- <script src="{% static 'bootstrap/js/bootstrap.min.js' %}" type="text/javascript" async></script> -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}" type="text/javascript" async></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script type="text/javascript" src="{% static '/mathjax/es5/tex-chtml.js' %}" id="MathJax-script" async></script>
+    <title>テスト勉強応援サイト</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'home' %}">テスト勉強応援サイト</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        {% if not user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{% url 'accounts:login' %}">ログイン</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{% url 'accounts:signup' %}">アカウント登録</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page"
+                                href="{% url 'accounts:my_page' pk=user.pk %}">マイページ</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenueLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">アプリ</a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenueLink">
+                                <li><a class="dropdown-item" href="{% url 'management:index' %}">問題管理アプリ</a></li>
+                                <li><a class="dropdown-item" href="">カレンダーアプリ(comming soon)</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="px-3 py-1 small bg-dark text-light container-fluid opacity-75">
+        {% if not user.is_authenticated %}
+        ログイン または アカウントを登録 してください。
+        {% else %}
+        ID : {{ user.username }}
+        {% endif %}
+    </div>
+
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+</body>
+
+</html>

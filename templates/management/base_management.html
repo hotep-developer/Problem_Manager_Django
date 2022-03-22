@@ -1,0 +1,21 @@
+{% extends "base/base.html" %}
+
+{% block main %}
+
+<div class="btn-group px-2 py-3">
+    <button type="button" class="btn btn-secondary" disabled>問題管理アプリ</button>
+    <button class="btn btn-secondary btn-lg dropdown-toggle dropdown-toggle-split" type="button"
+        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="visually-hidden">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="{% url 'management:index' %}">問題一覧</a></li>
+        <li><a class="dropdown-item" href="{% url 'management:subjects' %}">教科一覧</a></li>
+        <li><a class="dropdown-item" href="{% url 'management:book_index' %}">問題集一覧</a></li>
+    </ul>
+</div>
+
+<div class="px-2 py-1">
+    {% block content %}{% endblock %}
+</div>
+{% endblock %}

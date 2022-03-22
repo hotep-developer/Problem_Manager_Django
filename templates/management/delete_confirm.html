@@ -1,0 +1,27 @@
+{% extends "management/base_management.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-6 offset-md-3">
+        <div class="card mt-3 mb-3 bg-light">
+            <!-- カードヘッダー -->
+            <div class="card-header bg-danger text-light">
+                <h4 class="pt-2">{{ object_kind }}の削除</h4>
+            </div>
+            <!-- カードボディー -->
+            <div class="card-body">
+                <p>{{ object_kind }}"{{ object.name }}" を削除しますか？</p>
+                {% if object_kind == "教科" %}
+                <p class="text-danger">教科を削除すると，その教科に含まれる問題集・問題も削除されます。</p>
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-outline-secondary btn-lg btn-block mt-4"
+                        onclick="location.href=`{{ url_cancel }}`">キャンセル</button>
+                    <button type="submit" class="btn btn-danger btn-lg btn-block mt-4">削除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

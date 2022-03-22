@@ -1,0 +1,42 @@
+{% extends "management/base_management.html" %}
+<!-- コンテンツ -->
+{% block content %}
+<div class="container">
+    <div class="col-md-6 offset-md-3">
+        <div class="card mt-3 mb-3 bg-light">
+            <!-- カードヘッダー -->
+            <div class="card-header bg-success text-light">
+                <h4 class="pt-2">{{ object_kind }}の{{ process }}</h4>
+            </div>
+            <!-- カードボディー -->
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.non_field_errors }}
+                    <table>
+                        {% for field in form %}
+                        <tr>
+                            <td class="form-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label}}</label>
+                            </td>
+                            <td>
+                                {{ field }}
+                                {{ field.errors }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% csrf_token %}
+                    <!-- ボタン -->
+                    <button type="button" class="btn btn-outline-secondary btn-lg btn-block mt-4"
+                        onclick="location.href=`{{ url_cancel }}`">キャンセル</button>
+                    <button type="submit" class="btn btn-success btn-lg btn-block mt-4">{{ process }}</button>
+                    {% if not process == "作成" %}
+                    <button type="button" class="btn btn-danger btn-lg btn-block mt-4"
+                        onclick="location.href=`{{ url_delete }}`">削除</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
