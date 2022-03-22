@@ -42,6 +42,8 @@ class Book(models.Model):  # 問題集モデル
 
 class Problem(models.Model):  # 問題モデル
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.ForeignKey(
+        Subject, verbose_name="教科", on_delete=models.CASCADE, related_name="problems")
     book = models.ForeignKey(Book, verbose_name="問題集",
                              on_delete=models.CASCADE, related_name="problems")
     number = models.PositiveIntegerField(verbose_name="問題番号")
@@ -55,7 +57,7 @@ class Problem(models.Model):  # 問題モデル
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["user", "book", "number", ],
+                fields=["user", "subject", "book", "number", ],
                 name="problem_unique"
             ),
         ]

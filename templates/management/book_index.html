@@ -11,7 +11,7 @@
     {% for book in subject.books.all %}
     <ul>
         <li>
-            <a href="{#% url 'management:book_detail' pk=book.pk %#}">{{ book.name }}</a>
+            <a href="{% url 'management:book_detail' pk=book.pk %}">{{ book.name }}</a>
         </li>
     </ul>
     {% empty %}

@@ -14,6 +14,7 @@ urlpatterns = [
     path("subjects/<int:pk>/delete/", views.subject_delete, name="subject_delete"),
     # Book関係 (Subjectからurlの書き方を変更)
     path("book/index/", views.book_index, name="book_index"),
-    path("book/create", views.book_create, name="book_create"),
-    # path("book/<int:pk>/detail", views.book_index, name="book_detail"),
+    path("book/create/", views.book_create, name="book_create"),
+    path("book/<int:pk>/detail/", views.book_detail, name="book_detail"),
+    path("book/<int:pk>/delete/", views.book_delete, name="book_delete"),
 ]
