@@ -9,8 +9,8 @@ User=get_user_model()
 
 
 
-# 教科フォーム
 class SubjectForm(forms.ModelForm):
+    # 教科のフォーム
 
     class Meta:
         model = Subject
@@ -27,6 +27,9 @@ class SubjectForm(forms.ModelForm):
 
 
 class BookForm(forms.ModelForm):
+    # 問題集のフォーム
+    # "user"フィールドのquerysetのフィルタリングはview側でやってる。
+    # たぶん効率わるい
     class Meta:
         model = Book
         fields = ("user", "subject", "name", )

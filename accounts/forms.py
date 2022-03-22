@@ -34,7 +34,7 @@ class SignupForm(UserCreationForm):
             field.widget.attrs['required'] = ''  # 全フィールドを入力必須
 
             # オートフォーカスとプレースホルダーの設定
-            print(field.label)
+            # print(field.label)
             if field.label == '姓':
                 field.widget.attrs['autofocus'] = ''  # 入力可能状態にする
                 field.widget.attrs['placeholder'] = '田中'

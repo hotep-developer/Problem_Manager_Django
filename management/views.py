@@ -110,6 +110,7 @@ def book_index(request): # 教科一覧
 def book_create(request): # 問題集作成 (function base)
     if request.method == "POST":
         form = BookForm(request.POST,initial={"user":request.user}) # 初期値ありでフォームを作成
+        # form.fields["subject"].queryset = form.fields["subject"].queryset.filter(user=request.user) # こっちはいらないかも
         if form.is_valid():
             # subject = form.save(commit=False)
             # subject.user = request.user
@@ -118,6 +119,7 @@ def book_create(request): # 問題集作成 (function base)
             return redirect("management:book_index")
     else:
         form = BookForm(initial={"user":request.user})
+        form.fields["subject"].queryset = form.fields["subject"].queryset.filter(user=request.user)
     context = {
         "process": "作成",
         "object_kind": "問題集",

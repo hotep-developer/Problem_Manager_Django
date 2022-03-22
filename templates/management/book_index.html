@@ -8,7 +8,7 @@
 {% for subject in subjects %}
 <div class="pt-4">
     <h4>{{ subject.name }}</h4>
-    {% for book in subjects.books.all %}
+    {% for book in subject.books.all %}
     <ul>
         <li>
             <a href="{#% url 'management:book_detail' pk=book.pk %#}">{{ book.name }}</a>
