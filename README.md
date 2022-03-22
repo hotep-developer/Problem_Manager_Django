@@ -1,4 +1,7 @@
 # ウェブアプリのテスト for y.y
+更新履歴
+- 2022/3/22
+  - GitHubに上げた
 
 ## はじめに
 
@@ -53,20 +56,14 @@ Windows環境では試していないので，動作は保証しません。
     $ source .venv/bin/activate
     ```
 
-1. スーパーユーザーを作成
+2. マイグレーションする
 
     ```bash
-    (.venv) $ python manage.py createsuperuser
-    ```
-
-1. マイグレーションする
-
-    ```bash
-    (.venv) $ python manage.py makemigrations
+    (.venv) $ python manage.py makemigrations management
     (.venv) $ python manage.py migrate
     ```
 
-1. ローカルサーバーを立ち上げる
+3. ローカルサーバーを立ち上げる
 
     ```bash
     (.venv) $ python manage.py runserver
@@ -74,4 +71,4 @@ Windows環境では試していないので，動作は保証しません。
     (.venv) $ python manage.py runserver 127.0.0.1:8000
     ```
 
-1. http://127.0.0.1:8000 にアクセスすれば動作するはずです。
+4. http://127.0.0.1:8000 にアクセスすれば動作するはずです。
