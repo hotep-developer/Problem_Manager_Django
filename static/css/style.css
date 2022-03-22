@@ -20,7 +20,7 @@ input[type="radio"] {
 }
 
 [value="All"]:checked ~ div tr.target {
-    display: contents;
+    display: table-row;
 }
 
 [value="Maru"]:checked ~ div tr.target:not([data-category="◯"]),

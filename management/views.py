@@ -193,3 +193,39 @@ def problem_create(request):
         "url_cancel": reverse("management:top"),
     }
     return render(request, "management/management_form.html", context=context)
+
+
+def problem_detail(request, pk):
+    # Problem 詳細(detail & update)用
+    problem = get_object_or_404(Problem, pk=pk)
+    if request.method == "POST":
+        form = ProblemForm(request.POST,instance=problem) # 初期値ありでフォームを作成
+        if form.is_valid():
+            form.save()
+            return redirect("management:top")
+    else:
+        form = ProblemForm(instance=problem)
+        form.fields["book"].queryset = form.fields["book"].queryset.filter(user=request.user)
+    context = {
+        "process": "更新",
+        "object_kind": "問題",
+        "form": form,
+        "url_cancel": reverse("management:top"),
+        "url_delete": reverse("management:problem_delete", args=(problem.pk,)),
+    }
+    return render(request, "management/management_form.html", context=context)
+
+
+def problem_delete(request, pk):
+    # Problem 削除用
+    problem = get_object_or_404(Problem, pk=pk)
+    if request.method == "POST":
+        problem.delete()
+        return redirect("management:top")
+    context ={
+        "process": "削除",
+        "object_kind": "問題",
+        "object": problem,
+        "url_cancel": reverse("management:problem_detail", args=(problem.pk, )),
+    }
+    return render(request, "management/delete_confirm.html", context)

@@ -41,7 +41,7 @@ class ProblemForm(forms.ModelForm):
     # Problem のフォーム
     class Meta:
         model = Problem
-        fields = ("user", "book", "number", )
+        fields = ("user", "book", "number", "checker", )
 
     def __init__(self, *args, **kwargs):
         super(ProblemForm, self).__init__(*args, **kwargs)

@@ -66,11 +66,14 @@
                                 </thead>
                                 <tbody>
                                     {% for problem in book.problems.all|dictsort:"number" %}
-                                    <tr>
-                                        <th class="pnumber" scope="row"><a href="">{{ problem.number }}</a></th>
+                                    <tr class="target" data-category="{{ problem.get_checker_display }}">
+                                        <th class="pnumber" scope="row">
+                                            <a href="{% url 'management:problem_detail' pk=problem.pk %}">
+                                                {{problem.number }}
+                                            </a>
+                                        </th>
                                         <td>{{ problem.get_checker_display }}</td>
                                     </tr>
-
                                     {% endfor %}
                                 </tbody>
                             </table>

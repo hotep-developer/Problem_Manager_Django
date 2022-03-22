@@ -18,7 +18,7 @@
                 <p>{{ object.subject }}の問題集 "{{ object.name }}" を削除しますか？</p>
                 <p class="text-danger">問題集を削除すると，その問題集に含まれる問題も削除されます。</p>
                 {% elif object_kind == "問題" %}
-                <p>{{ object.book }}({{ object.subject }}}}の問題 "{{ object.name }}" を削除しますか？</p>
+                <p>{{ object.book }}({{ object.book.subject }})の問題 "{{ object.number }}" を削除しますか？</p>
                 {% endif %}
                 <form method="POST">
                     {% csrf_token %}

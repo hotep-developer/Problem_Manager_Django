@@ -19,4 +19,6 @@ urlpatterns = [
     path("book/<int:pk>/delete/", views.book_delete, name="book_delete"),
     # Problem 関係
     path("problem/create/", views.problem_create, name="problem_create"),
+    path("problem/<int:pk>/detail/", views.problem_detail, name="problem_detail"),
+    path("problem/<int:pk>/delete/", views.problem_delete, name="problem_delete"),
 ]
