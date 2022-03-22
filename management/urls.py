@@ -5,16 +5,17 @@ from management import views
 app_name = "management"
 
 urlpatterns = [
-    path("", views.index, name="index"),
-    # Subject関係
-    path("subjects/", views.subject_index, name="subjects"),
-    # path("subjects/create/", views.SubjectCreate.as_view(), name="subject_create"), # クラスベースviewの場合
-    path("subjects/create/", views.subject_create, name="subject_create"),
-    path("subjects/<int:pk>/detail/", views.subject_detail, name="subject_detail"),
-    path("subjects/<int:pk>/delete/", views.subject_delete, name="subject_delete"),
-    # Book関係 (Subjectからurlの書き方を変更)
-    path("book/index/", views.book_index, name="book_index"),
+    # topページ関係
+    path("", views.top, name="top"),
+    # 教科・問題集 一覧
+    path("index/", views.index, name="index"),
+    # Subject 関係
+    path("subject/create/", views.subject_create, name="subject_create"),
+    path("subject/<int:pk>/detail/", views.subject_detail, name="subject_detail"),
+    path("subject/<int:pk>/delete/", views.subject_delete, name="subject_delete"),
+    # Book 関係
     path("book/create/", views.book_create, name="book_create"),
     path("book/<int:pk>/detail/", views.book_detail, name="book_detail"),
     path("book/<int:pk>/delete/", views.book_delete, name="book_delete"),
+    # Problem 関係
 ]

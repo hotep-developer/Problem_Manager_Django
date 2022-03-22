@@ -1,90 +1,34 @@
 {% extends "management/base_management.html" %}
 
 {% block content %}
-<input class="btn-check" style=display:none type="radio" name="categories" id="All" value="All" autocomplete="off"
-    checked>
-<input class="btn-check" style=display:none type="radio" name="categories" id="Maru" value="Maru" autocomplete="off">
-<input class="btn-check" style=display:none type="radio" name="categories" id="Batsu" value="Batsu" autocomplete="off">
-
-<div class="py-2">
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <label class="btn btn-outline-primary" for="All"> All </label>
-
-        <label class="btn btn-outline-primary" for="Maru"> ◯のみ </label>
-
-        <label class="btn btn-outline-primary" for="Batsu"> ✕のみ </label>
+<div class="container-md">
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-success"
+                onclick="location.href=`{% url 'management:subject_create' %}`">教科を追加</button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-primary"
+                onclick="location.href=`{% url 'management:book_create' %}`">問題集を追加</button>
+        </div>
     </div>
 </div>
-<div class="pt-2">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        {% for subject in subjects %}
-        <li class="nav-item" role="presentation">
-            <button class="nav-link {% if forloop.first %}active{% endif %} text-dark" data-bs-toggle="tab"
-                data-bs-target="#tab-{{ subject.pk }}" type="button" role="tab" aria-controls="home"
-                aria-selected="true">
-                {{ subject.name }}
-            </button>
+<div class="pt-4">
+    {% for subject in subjects %}
+    <h4 class="pt-2">
+        <a class="text-success" href="{% url 'management:subject_detail' pk=subject.pk %}">{{ subject.name }}</a>
+    </h4>
+    <ul>
+        {% for book in subject.books.all %}
+        <li>
+            <a class="text-primary" href="{% url 'management:book_detail' pk=book.pk %}">{{ book.name }}</a>
         </li>
+        {% empty %}
+        問題集を追加してください
         {% endfor %}
     </ul>
-</div>
-<div class="pt-2">
-    <div class="tab-content" id="myTabContent">
-        {% for subject in subjects %}
-        <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="tab-{{ subject.pk }}"
-            role="tabpanel" aria-labelledby="home-tab">
-            <div class="accordion" id="accordionPanelsStayOpenExample">
-                {% for book in subject.books.all %}
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="panelsStayOpen-heading{{ book.pk }}">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#panelsStayOpen-collapse{{ book.pk }}" aria-expanded="true"
-                            aria-controls="panelsStayOpen-collapse{{ book.pk }}">
-                            {{ book.name }}
-                        </button>
-                    </h2>
-                    <div id="panelsStayOpen-collapse{{ book.pk }}" class="accordion-collapse collapse show"
-                        aria-labelledby="panelsStayOpen-headingOn">
-                        <div class="accordion-body">
-                            <div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">問題番号</th>
-                                            <th scope="col">チェック</th>
-                                        </tr>
-                                    </thead>
-                                    {% for problem in book.problems.all %}
-                                    <tr class="target" data-category="{{ problem.get_checker_display }}">
-                                        <th class="pnumber" scope="row">
-                                            <a href="">{{ problem.number }}</a>
-                                        </th>
-                                        <td>
-                                            {{ problem.get_checker_display }}
-                                        </td>
-                                    </tr>
-                                    {% empty %}
-                                    <span class="text-danger fw-bold">
-                                        問題を追加してください
-                                    </span>
-                                    {% endfor %}
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="text-danger fw-bold">
-                    問題集を追加してください
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% empty %}
-        <div class="text-danger fw-bold">
-            教科を追加してください
-        </div>
-        {% endfor %}
-    </div>
+    {% empty %}
+    教科一覧から教科を追加してください
+    {% endfor %}
 </div>
 {% endblock %}

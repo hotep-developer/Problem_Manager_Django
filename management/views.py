@@ -6,24 +6,57 @@ from management.forms import SubjectForm, BookForm
 
 
 
-def index(request): # 問題一覧
+def top(request):
+    # topページ
     subjects = Subject.objects.filter(user=request.user).all().order_by("name")
+    context = {
+        "subjects":subjects,
+    }
+    return render(request, "management/top.html", context)
+
+
+def index(request):
+    # Subject Book 一覧
+    subjects = Subject.objects.filter(user=request.user).all().order_by("name")
+
     context = {
         "subjects":subjects,
     }
     return render(request, "management/index.html", context)
 
 
-def subject_index(request): # 教科一覧
-    subjects = Subject.objects.filter(user=request.user).all().order_by("name")
-
+def subject_create(request):
+    # Subject 作成 (function base)
+    if request.method == "POST":
+        form = SubjectForm(request.POST, initial={"user":request.user}) # 初期値ありでフォームを作成
+        if form.is_valid():
+            # subject = form.save(commit=False)
+            # subject.user = request.user
+            # subject.save()
+            form.save()
+            return redirect("management:index")
+    else:
+        form = SubjectForm(initial={"user":request.user})
     context = {
-        "subjects":subjects,
+        "process": "作成",
+        "object_kind": "教科",
+        "form": form,
+        "url_cancel": reverse("management:index"),
     }
-    return render(request, "management/subject_index.html", context)
+    return render(request, "management/management_form.html", context=context)
 
 
-# class SubjectCreate(generic.CreateView): # 教科作成 (calss base)
+# def subject_index(request): # 教科一覧
+#     subjects = Subject.objects.filter(user=request.user).all().order_by("name")
+
+#     context = {
+#         "subjects":subjects,
+#     }
+#     return render(request, "management/subject_index.html", context)
+
+
+# class SubjectCreate(generic.CreateView):
+#     # Subject 作成 (calss base)
 #     form_class = SubjectForm
 #     template_name = "management/management_form.html"
 
@@ -44,27 +77,9 @@ def subject_index(request): # 教科一覧
 #         context["url_cancel"] = reverse("management:subjects")
 #         return context
 
-def subject_create(request): # 教科作成 (function base)
-    if request.method == "POST":
-        form = SubjectForm(request.POST, initial={"user":request.user}) # 初期値ありでフォームを作成
-        if form.is_valid():
-            # subject = form.save(commit=False)
-            # subject.user = request.user
-            # subject.save()
-            form.save()
-            return redirect("management:subjects")
-    else:
-        form = SubjectForm(initial={"user":request.user})
-    context = {
-        "process": "作成",
-        "object_kind": "教科",
-        "form": form,
-        "url_cancel": reverse("management:subjects"),
-    }
-    return render(request, "management/management_form.html", context=context)
 
-
-def subject_detail(request, pk): # 教科詳細
+def subject_detail(request, pk):
+    # Subject 詳細(detail & update)用
     subject = get_object_or_404(Subject, pk=pk)
     if request.method == "POST":
         form = SubjectForm(request.POST, instance=subject)
@@ -72,24 +87,25 @@ def subject_detail(request, pk): # 教科詳細
             subject = form.save(commit=False)
             subject.user = request.user
             subject.save()
-            return redirect("management:subjects")
+            return redirect("management:index")
     else:
         form = SubjectForm(instance=subject)
     context = {
         "process": "更新",
         "object_kind": "教科",
         "form": form,
-        "url_cancel": reverse("management:subjects"),
+        "url_cancel": reverse("management:index"),
         "url_delete": reverse("management:subject_delete", args=(subject.pk,)),
     }
     return render(request, "management/management_form.html", context=context)
 
 
 def subject_delete(request, pk):
+    # Subject 削除用
     subject = get_object_or_404(Subject, pk=pk)
     if request.method == "POST":
         subject.delete()
-        return redirect("management:subjects")
+        return redirect("management:index")
     context ={
         "process": "削除",
         "object_kind": "教科",
@@ -99,21 +115,14 @@ def subject_delete(request, pk):
     return render(request, "management/delete_confirm.html", context)
 
 
-def book_index(request): # 教科一覧
-    subjects = Subject.objects.filter(user=request.user).all().order_by("name")
-
-    context = {
-        "subjects":subjects,
-    }
-    return render(request, "management/book_index.html", context)
-
-def book_create(request): # 問題集作成 (function base)
+def book_create(request):
+    # Book 作成用
     if request.method == "POST":
         form = BookForm(request.POST,initial={"user":request.user}) # 初期値ありでフォームを作成
         # form.fields["subject"].queryset = form.fields["subject"].queryset.filter(user=request.user) # こっちはいらないかも
         if form.is_valid():
             form.save()
-            return redirect("management:book_index")
+            return redirect("management:index")
     else:
         form = BookForm(initial={"user":request.user})
         form.fields["subject"].queryset = form.fields["subject"].queryset.filter(user=request.user)
@@ -121,18 +130,19 @@ def book_create(request): # 問題集作成 (function base)
         "process": "作成",
         "object_kind": "問題集",
         "form": form,
-        "url_cancel": reverse("management:book_index"),
+        "url_cancel": reverse("management:index"),
     }
     return render(request, "management/management_form.html", context=context)
 
 
-def book_detail(request, pk): # 問題集詳細
+def book_detail(request, pk):
+    # Book 詳細(detail & update)用
     book = get_object_or_404(Book, pk=pk)
     if request.method == "POST":
         form = BookForm(request.POST,instance=book) # 初期値ありでフォームを作成
         if form.is_valid():
             form.save()
-            return redirect("management:book_index")
+            return redirect("management:index")
     else:
         form = BookForm(instance=book)
         form.fields["subject"].queryset = form.fields["subject"].queryset.filter(user=request.user)
@@ -140,17 +150,18 @@ def book_detail(request, pk): # 問題集詳細
         "process": "更新",
         "object_kind": "問題集",
         "form": form,
-        "url_cancel": reverse("management:book_index"),
+        "url_cancel": reverse("management:index"),
         "url_delete": reverse("management:book_delete", args=(book.pk,)),
     }
     return render(request, "management/management_form.html", context=context)
 
 
 def book_delete(request, pk):
+    # Book 削除用
     book = get_object_or_404(Book, pk=pk)
     if request.method == "POST":
         book.delete()
-        return redirect("management:book_index")
+        return redirect("management:index")
     context ={
         "process": "削除",
         "object_kind": "問題集",
@@ -158,3 +169,7 @@ def book_delete(request, pk):
         "url_cancel": reverse("management:book_detail", args=(book.pk, )),
     }
     return render(request, "management/delete_confirm.html", context)
+
+
+def problem_create(request):
+    pass
